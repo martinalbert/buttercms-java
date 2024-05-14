@@ -1,0 +1,37 @@
+# This workflow will publish a package to the Maven registry
+
+name: Build & Publish
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    if: contains(github.event.head_commit.message, 'chore(release)')
+    runs-on: ubuntu-22.04
+    steps:  
+    - name: Checkout code
+      uses: actions/checkout@v4.1.4
+    
+    - name: Set up Java
+      uses: actions/setup-java@v4.2.1
+      with:
+        java-version: '8'
+        distribution: 'adopt'
+        cache: 'maven'
+        cache-dependency-path: ./pom.xml
+    
+    - name: Install dependencies, Build and Test with Maven
+      run: |
+        mvn clean install
+        mvn -B package --file pom.xml
+        mvn test
+
+    - name: Deploy to Maven Central
+      run: |
+        mvn -B release:prepare
+        mvn -B release:perform
+      env:
+        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
