@@ -5,7 +5,7 @@
 
     <groupId>io.github.martinalbert</groupId>
     <artifactId>buttercmsclientfork</artifactId>
-    <version>1.12-SNAPSHOT</version>
+    <version>1.11.1-SNAPSHOT</version>
 
     <name>buttercmsclientfork</name>
     <url>https://github.com/martinalbert/buttercms-java</url>
