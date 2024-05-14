@@ -12,26 +12,30 @@ For a comprehensive list of examples, check out the [API documentation](https://
 ### Maven
 
 **pom.xml**
+<!-- {x-release-please-start-version} -->
 ```
 <dependencies>
 ...
     <dependency>
       <groupId>com.buttercms</groupId>
       <artifactId>buttercmsclient</artifactId>
-      <version>1.6</version>
+      <version>1.11</version>
     </dependency>
 ...
 </dependencies>    
 ```
+<!-- {x-release-please-end} -->
 
 ### Gradle
 
 **build.gradle**
+<!-- {x-release-please-start-version} -->
 ```
 dependencies {
-    implementation 'com.buttercms:buttercmsclient:1.6'
+    implementation 'com.buttercms:buttercmsclient:1.11'
 }
 ```
+<!-- {x-release-please-end} -->
 
 
 ## Usage
