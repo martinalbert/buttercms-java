@@ -43,6 +43,9 @@ jobs:
 
     - name: Deploy to snapshot repository
       run: mvn deploy
+      env:
+        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
 
   publish:
     runs-on: ubuntu-22.04
