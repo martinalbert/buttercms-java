@@ -1,4 +1,4 @@
-# This workflow will publish a package to the Maven registry
+# This workflow will publish a package to the Apache Maven Central registry
 
 name: Build & Publish
 
@@ -7,9 +7,13 @@ on:
     branches: [ master ]
 
 jobs:
-  build:
+  test: 
+    uses: './.github/workflows/test.yml'
+    
+  build-and-deploy:
     if: contains(github.event.head_commit.message, 'chore(release)')
     runs-on: ubuntu-22.04
+    needs: test
     steps:  
     - name: Checkout code
       uses: actions/checkout@v4.1.4
@@ -21,56 +25,11 @@ jobs:
         distribution: 'adopt'
         cache: 'maven'
         cache-dependency-path: ./pom.xml
-    
-    - name: Install dependencies, Build and Test with Maven
-      run: |
-        mvn clean install
+        server-id: central  # This id should match with the id in your pom.xml or settings.xml
+        server-username: ${{ secrets.OSSRH_USER_TOKEN }}
+        server-password: ${{ secrets.OSSRH_PWD_TOKEN }}
+        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
+        gpg-passphrase: ${{ secrets.GPG_PWD }}
 
-  publish-snapshot:
-    runs-on: ubuntu-22.04
-    needs: build
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4.1.4
-    
-    - name: Set up JDK & Java
-      uses: actions/setup-java@v4.2.1
-      with:
-        java-version: '8'
-        distribution: 'adopt'
-        cache: 'maven'
-        cache-dependency-path: ./pom.xml
-
-    - name: Deploy to snapshot repository
-      run: mvn deploy
-      env:
-        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-        OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
-
-  publish:
-    runs-on: ubuntu-22.04
-    needs: publish-snapshot
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4.1.4
-    
-    - name: Set up JDK & Java
-      uses: actions/setup-java@v4.2.1
-      with:
-        java-version: '8'
-        distribution: 'adopt'
-        cache: 'maven'
-        cache-dependency-path: ./pom.xml
-
-    - name: Configure Git
-      run: |
-        git config --global user.name "GitHub Actions Bot"
-        git config --global user.email "actions@github.com"
-      
-    - name: Deploy to Maven Central
-      run: |
-        mvn -B release:prepare
-        mvn -B release:perform
-      env:
-        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
-        OSSRH_PASSWORD: ${{ secrets.OSSRH_PASSWORD }}
+    - name: Publish to Apache Maven Central
+      run: mvn deploy -P release # Using the profile `release` for using the necessary dependencies
