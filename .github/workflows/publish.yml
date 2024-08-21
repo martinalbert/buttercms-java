@@ -8,6 +8,7 @@ on:
 
 jobs:
   test: 
+    if: contains(github.event.head_commit.message, 'chore(release)')
     uses: './.github/workflows/test.yml'
     
   build-and-deploy:
@@ -26,10 +27,17 @@ jobs:
         cache: 'maven'
         cache-dependency-path: ./pom.xml
         server-id: ossrh  # This id should match with the id in your pom.xml or settings.xml
-        server-username: ${{ secrets.OSSRH_USER_TOKEN }}
-        server-password: ${{ secrets.OSSRH_PWD_TOKEN }}
-        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }}
-        gpg-passphrase: ${{ secrets.GPG_PWD }}
+        server-username: OSSRH_USERNAME # Env variable for username in deploy (Passes the environment variable name, not the value)
+        server-password: OSSRH_TOKEN # Env variable for token in deploy
+        gpg-private-key: ${{ secrets.GPG_PRIVATE_KEY }} # Value of the GPG private key to import
+        gpg-passphrase: GPG_PWD  # Env variable for GPG private key passphrase
 
-    - name: Publish to Apache Maven Central
-      run: mvn deploy -P release # Using the profile `release` for using the necessary dependencies
+    - name: Build with Maven Wrapper
+      run: ./mvnw clean install
+
+    - name: Deploy to Apache Maven
+      run: ./mvnw deploy -P release -Dgpg.skip=false # Using the profile `release` for using the necessary dependencies
+      env:
+        OSSRH_USERNAME: ${{ secrets.OSSRH_USERNAME }}
+        OSSRH_TOKEN: ${{ secrets.OSSRH_TOKEN }}
+        GPG_PWD: ${{ secrets.GPG_PWD }}
