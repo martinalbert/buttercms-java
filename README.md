@@ -19,7 +19,7 @@ For a comprehensive list of examples, check out the [API documentation](https://
     <dependency>
       <groupId>com.buttercms</groupId>
       <artifactId>buttercmsclient</artifactId>
-      <version>2.0.1</version>
+      <version>2.0.2</version>
     </dependency>
 ...
 </dependencies>    
@@ -32,7 +32,7 @@ For a comprehensive list of examples, check out the [API documentation](https://
 <!-- {x-release-please-start-version} -->
 ```
 dependencies {
-    implementation 'com.buttercms:buttercmsclient:2.0.1'
+    implementation 'com.buttercms:buttercmsclient:2.0.2'
 }
 ```
 <!-- {x-release-please-end} -->
