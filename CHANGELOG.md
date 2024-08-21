@@ -1,5 +1,17 @@
 # Changelog
 
+## [2.1.0](https://github.com/martinalbert/buttercms-java/compare/v2.0.1...v2.1.0) (2024-08-21)
+
+
+### Features
+
+* add maven wrapper ([23d6c98](https://github.com/martinalbert/buttercms-java/commit/23d6c982dc813354add70af3d5da49f40b44644e))
+
+
+### Bug Fixes
+
+* update workflows and add maven wrapper ([3a133b4](https://github.com/martinalbert/buttercms-java/commit/3a133b42f2006d220495f3d8eec36a9272f7c5b8))
+
 ## [2.0.1](https://github.com/martinalbert/buttercms-java/compare/v2.0.0...v2.0.1) (2024-06-21)
 
 
